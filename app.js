@@ -69,6 +69,47 @@ function displayData(data) {
     sheetDataDiv.appendChild(section);
   }
 
+  function displayData(data) {
+  const sheetDataDiv = document.getElementById('sheetData');
+  sheetDataDiv.innerHTML = ''; // Clear old data
+
+  // Code for grouping the first 5 tables with a header and data row
+
+  // Code for Month and Sales data table and bar chart
+  renderStackedBarChart(data[5]); // Call the bar chart function after the table
+}
+
+// Add the renderStackedBarChart function here, below the displayData function
+function renderStackedBarChart(data) {
+  // Code for creating the stacked bar chart
+  const months = data.slice(1).map(row => row[0]);
+  const sales = data.slice(1).map(row => row[1]);
+
+  const chartCanvas = document.createElement('canvas');
+  document.getElementById('sheetData').appendChild(chartCanvas);
+
+  new Chart(chartCanvas, {
+    type: 'bar',
+    data: {
+      labels: months,
+      datasets: [{
+        label: 'Sales',
+        data: sales,
+        backgroundColor: '#4CAF50'
+      }]
+    },
+    options: {
+      scales: {
+        x: { stacked: true },
+        y: { stacked: true, beginAtZero: true }
+      }
+    }
+  });
+}
+
+// Any other script logic, such as event listeners, should be after this
+
+
   // Handle the last 2 tables for Month and Sales data
   const monthSalesSection = document.createElement('section');
   const heading = document.createElement('h2');
