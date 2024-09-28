@@ -15,7 +15,7 @@ function loadClient() {
 function fetchSheetData() {
   return gapi.client.sheets.spreadsheets.values.get({
     "spreadsheetId": "1MQIuVmfrruCMyPk1Hc0iGGONHyahDOJ5p_Yd0FhCKQs",
-    "range": "Sheet1!A1:E10"
+    "range": "Dashboard!A1:O31"
   })
   .then(function(response) {
     console.log("Data fetched", response.result.values);
