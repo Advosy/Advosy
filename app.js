@@ -157,3 +157,4 @@ document.addEventListener("DOMContentLoaded", function() {
     authenticate().then(loadClient).then(fetchSheetData);
   });
 });
+
