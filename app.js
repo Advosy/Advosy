@@ -23,7 +23,7 @@ function loadClient() {
 function fetchSheetData() {
   return gapi.client.sheets.spreadsheets.values.get({
     "spreadsheetId": "1MQIuVmfrruCMyPk1Hc0iGGONHyahDOJ5p_Yd0FhCKQs", // Replace with your actual Spreadsheet ID
-    "range": "Dashboard!A1:O31"
+    "range": "App!A1:I34"
   })
   .then(function(response) {
     console.log("Data fetched", response.result.values);
