@@ -35,37 +35,36 @@ function fetchSheetData() {
 }
 
 function displayData(data) {
-   const sheetDataDiv = document.getElementById('sheetData');
+  const sheetDataDiv = document.getElementById('sheetData');
   sheetDataDiv.innerHTML = ''; // Clear any old data
 
-  // Create a table element
-  const table = document.createElement('table');
-  table.classList.add('styled-table'); // Add a CSS class for styling
-
-  // Loop through the data and populate the table
+  // Loop through the data and create cards
   data.forEach((row, index) => {
-    const tr = document.createElement('tr');
-    
-    // Use the first row for table headers
     if (index === 0) {
-      row.forEach(cell => {
-        const th = document.createElement('th');
-        th.textContent = cell;
-        tr.appendChild(th);
-      });
-    } else {
-      row.forEach(cell => {
-        const td = document.createElement('td');
-        td.textContent = cell;
-        tr.appendChild(td);
-      });
+      return; // Skip the header row
     }
-    
-    table.appendChild(tr);
-  });
 
-  sheetDataDiv.appendChild(table); // Append the table to the div
+    // Create a card div for each row of data
+    const card = document.createElement('div');
+    card.classList.add('card');
+
+    // Assuming the first column is the title, and the rest are details
+    const title = document.createElement('h3');
+    title.textContent = row[0]; // Use the first column as the title
+    card.appendChild(title);
+
+    // Loop through the rest of the columns and add them as details
+    for (let i = 1; i < row.length; i++) {
+      const detail = document.createElement('p');
+      detail.textContent = row[i]; // Add other data as paragraphs
+      card.appendChild(detail);
+    }
+
+    // Add the card to the sheetDataDiv
+    sheetDataDiv.appendChild(card);
+  });
 }
+
 
 // Load the API and set up the click event for the button
 document.addEventListener("DOMContentLoaded", function() {
