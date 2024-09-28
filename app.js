@@ -36,34 +36,74 @@ function fetchSheetData() {
 
 function displayData(data) {
   const sheetDataDiv = document.getElementById('sheetData');
-  sheetDataDiv.innerHTML = ''; // Clear any old data
+  sheetDataDiv.innerHTML = ''; // Clear old data
 
-  // Loop through the data and create cards
-  data.forEach((row, index) => {
-    if (index === 0) {
-      return; // Skip the header row
-    }
+  // Assume the first 5 tables have 2 rows (1 header + 1 data)
+  for (let i = 0; i < 5; i++) {
+    const section = document.createElement('section');
+    const heading = document.createElement('h2');
+    heading.textContent = `Table ${i + 1}`; // Replace with actual table title
+    section.appendChild(heading);
 
-    // Create a card div for each row of data
-    const card = document.createElement('div');
-    card.classList.add('card');
+    const table = document.createElement('table');
+    const headerRow = data[i][0]; // Assume first row is header
+    const dataRow = data[i][1]; // Assume second row is data
 
-    // Assuming the first column is the title, and the rest are details
-    const title = document.createElement('h3');
-    title.textContent = row[0]; // Use the first column as the title
-    card.appendChild(title);
+    const headerTr = document.createElement('tr');
+    headerRow.forEach(header => {
+      const th = document.createElement('th');
+      th.textContent = header;
+      headerTr.appendChild(th);
+    });
+    table.appendChild(headerTr);
 
-    // Loop through the rest of the columns and add them as details
-    for (let i = 1; i < row.length; i++) {
-      const detail = document.createElement('p');
-      detail.textContent = row[i]; // Add other data as paragraphs
-      card.appendChild(detail);
-    }
+    const dataTr = document.createElement('tr');
+    dataRow.forEach(cell => {
+      const td = document.createElement('td');
+      td.textContent = cell;
+      dataTr.appendChild(td);
+    });
+    table.appendChild(dataTr);
 
-    // Add the card to the sheetDataDiv
-    sheetDataDiv.appendChild(card);
+    section.appendChild(table);
+    sheetDataDiv.appendChild(section);
+  }
+
+  // Handle the last 2 tables for Month and Sales data
+  const monthSalesSection = document.createElement('section');
+  const heading = document.createElement('h2');
+  heading.textContent = 'Sales Data';
+  monthSalesSection.appendChild(heading);
+
+  const monthSalesTable = document.createElement('table');
+  const monthHeaderRow = data[5][0]; // Month and Sales Header
+  const monthSalesRows = data[5].slice(1); // Remaining rows for months and sales data
+
+  const headerTr = document.createElement('tr');
+  monthHeaderRow.forEach(header => {
+    const th = document.createElement('th');
+    th.textContent = header;
+    headerTr.appendChild(th);
   });
+  monthSalesTable.appendChild(headerTr);
+
+  monthSalesRows.forEach(row => {
+    const dataTr = document.createElement('tr');
+    row.forEach(cell => {
+      const td = document.createElement('td');
+      td.textContent = cell;
+      dataTr.appendChild(td);
+    });
+    monthSalesTable.appendChild(dataTr);
+  });
+
+  monthSalesSection.appendChild(monthSalesTable);
+  sheetDataDiv.appendChild(monthSalesSection);
+
+  // Now render the stacked bar chart for Sales
+  renderStackedBarChart(data[5]);
 }
+
 
 
 // Load the API and set up the click event for the button
