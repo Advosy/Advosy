@@ -14,7 +14,7 @@ function loadClient() {
 
 function fetchSheetData() {
   return gapi.client.sheets.spreadsheets.values.get({
-    "spreadsheetId": "1MQIuVmfrruCMyPk1Hc0iGGONHyahDOJ5p_Yd0FhCKQs/edit?gid=1194383499#gid=1194383499",
+    "spreadsheetId": "1MQIuVmfrruCMyPk1Hc0iGGONHyahDOJ5p_Yd0FhCKQs",
     "range": "Sheet1!A1:E10"
   })
   .then(function(response) {
