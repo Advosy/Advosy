@@ -35,13 +35,36 @@ function fetchSheetData() {
 }
 
 function displayData(data) {
-  const sheetDataDiv = document.getElementById('sheetData');
+   const sheetDataDiv = document.getElementById('sheetData');
   sheetDataDiv.innerHTML = ''; // Clear any old data
-  data.forEach(row => {
-    const rowDiv = document.createElement('div');
-    rowDiv.textContent = row.join(', ');
-    sheetDataDiv.appendChild(rowDiv);
+
+  // Create a table element
+  const table = document.createElement('table');
+  table.classList.add('styled-table'); // Add a CSS class for styling
+
+  // Loop through the data and populate the table
+  data.forEach((row, index) => {
+    const tr = document.createElement('tr');
+    
+    // Use the first row for table headers
+    if (index === 0) {
+      row.forEach(cell => {
+        const th = document.createElement('th');
+        th.textContent = cell;
+        tr.appendChild(th);
+      });
+    } else {
+      row.forEach(cell => {
+        const td = document.createElement('td');
+        td.textContent = cell;
+        tr.appendChild(td);
+      });
+    }
+    
+    table.appendChild(tr);
   });
+
+  sheetDataDiv.appendChild(table); // Append the table to the div
 }
 
 // Load the API and set up the click event for the button
