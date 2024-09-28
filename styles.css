@@ -32,3 +32,31 @@
 .styled-table tr:hover {
   background-color: #f1f1f1;
 }
+
+/* Default table styles for desktop/tablet */
+#sheetData {
+  margin: 20px auto;
+  padding: 20px;
+  max-width: 90%;
+}
+
+/* Mobile-friendly card style */
+@media screen and (max-width: 768px) {
+  .card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    margin: 10px 0;
+    padding: 15px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .card h3 {
+    margin-top: 0;
+    color: #4CAF50; /* Card title color */
+  }
+
+  .card p {
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+}
