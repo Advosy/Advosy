@@ -47,7 +47,7 @@ function displayData(data) {
 // Load the API and set up the click event for the button
 document.addEventListener("DOMContentLoaded", function() {
   gapi.load("client:auth2", function() {
-    gapi.auth2.init({client_id: 'YOUR_CLIENT_ID'}); // Initialize with your Client ID
+    gapi.auth2.init({client_id: '365324237288-6gc4iopjfudka628e8qv70muus8qp4mg.apps.googleusercontent.com'}); // Initialize with your Client ID
   });
 
   document.getElementById('loadData').addEventListener('click', function() {
