@@ -10,7 +10,7 @@ function authenticate() {
 }
 
 function loadClient() {
-  gapi.client.setApiKey("YOUR_API_KEY"); // Replace with your actual API key
+  gapi.client.setApiKey("AIzaSyAOnBct76Z-dCtn3GtQBvPIaSriGgA8ohw"); // Replace with your actual API key
   return gapi.client.load("https://sheets.googleapis.com/$discovery/rest?version=v4")
     .then(function() {
       console.log("GAPI client loaded for API");
@@ -22,7 +22,7 @@ function loadClient() {
 
 function fetchSheetData() {
   return gapi.client.sheets.spreadsheets.values.get({
-    "spreadsheetId": "YOUR_SPREADSHEET_ID", // Replace with your actual Spreadsheet ID
+    "spreadsheetId": "1MQIuVmfrruCMyPk1Hc0iGGONHyahDOJ5p_Yd0FhCKQs", // Replace with your actual Spreadsheet ID
     "range": "Dashboard!A1:O31"
   })
   .then(function(response) {
