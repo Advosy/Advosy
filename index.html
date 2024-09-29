@@ -3,26 +3,44 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Spreadsheet Data App</title>
+  <title>Spreadsheet App</title>
+
+  <!-- Manifest for PWA support -->
   <link rel="manifest" href="manifest.json">
+
+  <!-- Chart.js for rendering charts -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Google Identity Services (GIS) for OAuth -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+  <!-- Custom stylesheet -->
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h1>Google Sheets Data Visualization</h1>
-  <button id="loadData">Load Data from Google Sheet</button>
+  <h1>Google Sheets Data</h1>
+
+  <!-- Button to trigger loading of Google Sheets data -->
+  <button id="loadData">Load Data from Sheet</button>
+
+  <!-- Div to display the Google Sheets data -->
   <div id="sheetData"></div>
-  
+
+  <!-- Google API Loader -->
   <script src="https://apis.google.com/js/api.js"></script>
+
+  <!-- Your custom JavaScript file -->
   <script src="app.js"></script>
-  <!-- Optional Service Worker -->
+
+  <!-- Optional: Service Worker for PWA functionality -->
+  <!-- Uncomment if you have a service-worker.js file in place -->
   <!--
   <script>
-   if ('serviceWorker' in navigator) {
-     navigator.serviceWorker.register('/service-worker.js').then(function() {
-       console.log('Service Worker Registered');
-     });
-   }
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/service-worker.js').then(function() {
+        console.log('Service Worker Registered');
+      });
+    }
   </script>
   -->
 </body>
