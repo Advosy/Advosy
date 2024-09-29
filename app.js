@@ -36,6 +36,10 @@ function fetchSheetData() {
 
 
 function displayData(data) {
+  console.log("Displaying data:", data); // Log the data passed to the function
+  const sheetDataDiv = document.getElementById('sheetData');
+  sheetDataDiv.innerHTML = ''; // Clear old data
+  
   const sheetDataDiv = document.getElementById('sheetData');
   sheetDataDiv.innerHTML = ''; // Clear old data
 
