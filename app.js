@@ -1,3 +1,51 @@
+// Authenticate and load Google Sheets API
+function authenticate() {
+  return gapi.auth2.getAuthInstance()
+    .signIn({scope: "https://www.googleapis.com/auth/spreadsheets.readonly"})
+    .then(() => {
+      console.log("Sign-in successful");
+    }, (err) => {
+      console.error("Error signing in", err);
+    });
+}
+
+function loadClient() {
+  gapi.client.setApiKey("AIzaSyAOnBct76Z-dCtn3GtQBvPIaSriGgA8ohw"); // Your API Key
+  return gapi.client.load("https://sheets.googleapis.com/$discovery/rest?version=v4")
+    .then(() => {
+      console.log("GAPI client loaded for API");
+    }, (err) => {
+      console.error("Error loading GAPI client for API", err);
+    });
+}
+
+function fetchSheetData() {
+  gapi.client.sheets.spreadsheets.values.batchGet({
+    spreadsheetId: "1MQIuVmfrruCMyPk1Hc0iGGONHyahDOJ5p_Yd0FhCKQs", // Your Spreadsheet ID
+    ranges: [
+      "App!A1:G2",  // Monthly Roofing Data
+      "App!A4:I5",  // Monthly Solar Data
+      "App!A7:I7",  // Point Data
+      "App!A10:G11", // Yearly Roofing Data
+      "App!A13:I14", // Yearly Solar Data
+      "App!A16:B28", // Total Roofing Sales Per Month
+      "App!D16:E28"  // Total Solar Sales Per Month
+    ]
+  }).then((response) => {
+    const roofingData = response.result.valueRanges[0].values;
+    const solarData = response.result.valueRanges[1].values;
+    const pointData = response.result.valueRanges[2].values;
+    const yearlyRoofingData = response.result.valueRanges[3].values;
+    const yearlySolarData = response.result.valueRanges[4].values;
+    const totalRoofingSalesPerMonth = response.result.valueRanges[5].values;
+    const totalSolarSalesPerMonth = response.result.valueRanges[6].values;
+
+    displayData(roofingData, solarData, pointData, yearlyRoofingData, yearlySolarData, totalRoofingSalesPerMonth, totalSolarSalesPerMonth);
+  }, (err) => {
+    console.error("Error fetching data", err);
+  });
+}
+
 function displayData(roofingData, solarData, pointData, yearlyRoofingData, yearlySolarData, totalRoofingSalesPerMonth, totalSolarSalesPerMonth) {
   const sheetDataDiv = document.getElementById('sheetData');
   sheetDataDiv.innerHTML = ''; // Clear any old data
@@ -38,7 +86,7 @@ function renderDataSectionAsTiles(title, data) {
   sheetDataDiv.appendChild(section);
 }
 
-// Render the stacked bar chart for Total Roofing and Solar Sales Per Month (same as before)
+// Render the stacked bar chart for Total Roofing and Solar Sales Per Month
 function renderStackedSalesChart(totalRoofingSalesPerMonth, totalSolarSalesPerMonth) {
   const monthsRoofing = totalRoofingSalesPerMonth.slice(1).map(row => row[0]);
   const salesRoofing = totalRoofingSalesPerMonth.slice(1).map(row => parseInt(row[1], 10));
@@ -81,7 +129,7 @@ function renderStackedSalesChart(totalRoofingSalesPerMonth, totalSolarSalesPerMo
 // Load the API and set up the click event for the button
 document.addEventListener("DOMContentLoaded", () => {
   gapi.load("client:auth2", () => {
-    gapi.auth2.init({client_id: 'YOUR_CLIENT_ID'}); // Replace with your actual Client ID
+    gapi.auth2.init({client_id: '365324237288-6gc4iopjfudka628e8qv70muus8qp4mg.apps.googleusercontent.com'}); // Your Client ID
   });
 
   document.getElementById('loadData').addEventListener('click', () => {
