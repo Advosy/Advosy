@@ -22,8 +22,8 @@ function loadClient() {
 
 function fetchSheetData() {
   return gapi.client.sheets.spreadsheets.values.get({
-    "spreadsheetId": "your-spreadsheet-id", // Your actual spreadsheet ID
-    "range": "Sheet1!A1:Z100" // Adjust the range as needed
+    "spreadsheetId": "1MQIuVmfrruCMyPk1Hc0iGGONHyahDOJ5p_Yd0FhCKQs", // Your actual spreadsheet ID
+    "range": "App!A1:I34" // Adjust the range as needed
   })
   .then(function(response) {
     console.log("Data fetched successfully:", response.result.values); // Log the data
