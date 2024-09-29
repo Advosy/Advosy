@@ -50,14 +50,24 @@ button:hover {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.tile h3 {
-  margin-top: 0;
-  color: #4CAF50;
+/* Style based on type */
+.roofing .tile-header {
+  color: #4678bc; /* Navy blue for roofing */
 }
 
-.tile p {
-  font-size: 14px;
-  margin: 0;
+.solar .tile-header {
+  color: #e0bc67; /* Gold for solar */
+}
+
+.tile-header {
+  font-size: 14px; /* Smaller header */
+  margin-top: 0;
+}
+
+.tile-value {
+  font-size: 18px; /* Larger data value */
+  color: #333;
+  font-weight: bold;
 }
 
 /* Chart Styles */
