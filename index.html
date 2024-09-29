@@ -3,48 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Spreadsheet App</title>
-
-  <!-- Link to PWA manifest -->
+  <title>Spreadsheet Data App</title>
   <link rel="manifest" href="manifest.json">
-
-  <!-- Google Identity Services script -->
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
-
-  <!-- Link to Chart.js for rendering charts -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-  <!-- Link to your external stylesheet -->
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h1>Google Sheets Data</h1>
-
-  <!-- Button to load data from Google Sheets -->
-  <button id="loadData">Load Data from Sheet</button>
-
-  <!-- Container where the data and charts will be displayed -->
+  <h1>Google Sheets Data Visualization</h1>
+  <button id="loadData">Load Data from Google Sheet</button>
   <div id="sheetData"></div>
-
-  <!-- Fallback message for users without JavaScript -->
-  <noscript>
-    <p>Please enable JavaScript to view this content.</p>
-  </noscript>
-
-  <!-- Load the Google API library -->
+  
   <script src="https://apis.google.com/js/api.js"></script>
-
-  <!-- Link to your JavaScript file -->
   <script src="app.js"></script>
-
-  <!-- Service worker (commented out for now) -->
+  <!-- Optional Service Worker -->
   <!--
   <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/service-worker.js').then(function() {
-        console.log('Service Worker Registered');
-      });
-    }
+   if ('serviceWorker' in navigator) {
+     navigator.serviceWorker.register('/service-worker.js').then(function() {
+       console.log('Service Worker Registered');
+     });
+   }
   </script>
   -->
 </body>
