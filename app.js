@@ -153,14 +153,21 @@ function renderStackedBarChart(data) {
 }
 
 
-
 // Load the API and set up the click event for the button
 document.addEventListener("DOMContentLoaded", function() {
+  console.log("DOM fully loaded and parsed"); // Log when the DOM is fully loaded
+
   gapi.load("client:auth2", function() {
-    gapi.auth2.init({client_id: '365324237288-6gc4iopjfudka628e8qv70muus8qp4mg.apps.googleusercontent.com'}); // Initialize with your Client ID
+    console.log("GAPI client and auth2 loaded"); // Log when the GAPI client is loaded
+    gapi.auth2.init({
+      client_id: '365324237288-6gc4iopjfudka628e8qv70muus8qp4mg.apps.googleusercontent.com' // Initialize with your Client ID
+    }).then(function() {
+      console.log("Google Auth initialized"); // Log when the Google Auth is initialized
+    });
   });
 
   document.getElementById('loadData').addEventListener('click', function() {
+    console.log("Button clicked, starting authentication..."); // Log when button is clicked
     authenticate().then(loadClient).then(fetchSheetData);
   });
 });
