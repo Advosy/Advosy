@@ -22,17 +22,18 @@ function loadClient() {
 
 function fetchSheetData() {
   return gapi.client.sheets.spreadsheets.values.get({
-    "spreadsheetId": "1MQIuVmfrruCMyPk1Hc0iGGONHyahDOJ5p_Yd0FhCKQs", // Replace with your actual Spreadsheet ID
-    "range": "App!A1:I34"
+    "spreadsheetId": "your-spreadsheet-id", // Your actual spreadsheet ID
+    "range": "Sheet1!A1:Z100" // Adjust the range as needed
   })
   .then(function(response) {
-    console.log("Data fetched", response.result.values);
-    displayData(response.result.values);
+    console.log("Data fetched successfully:", response.result.values); // Log the data
+    displayData(response.result.values); // Call displayData function
   },
   function(error) {
-    console.error("Error fetching data", error);
+    console.error("Error fetching data", error); // Log any errors
   });
 }
+
 
 function displayData(data) {
   const sheetDataDiv = document.getElementById('sheetData');
