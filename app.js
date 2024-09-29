@@ -1,25 +1,46 @@
-// Authenticate and load Google Sheets API
-function authenticate() {
-  console.log("Starting authentication...");
-  return gapi.auth2.getAuthInstance()
-    .signIn({scope: "https://www.googleapis.com/auth/spreadsheets.readonly"})
-    .then(() => {
-      console.log("Sign-in successful");
-    }, (err) => {
-      console.error("Error signing in", err);
-    });
+// Initialize Google Identity Services for OAuth
+let tokenClient;
+let accessToken = null;
+
+// Initialize the OAuth client
+function initOAuth() {
+  tokenClient = google.accounts.oauth2.initTokenClient({
+    client_id: '365324237288-6gc4iopjfudka628e8qv70muus8qp4mg.apps.googleusercontent.com', // Your Client ID
+    scope: 'https://www.googleapis.com/auth/spreadsheets.readonly',
+    callback: (response) => {
+      if (response.error) {
+        console.error('Error during authentication:', response);
+      } else {
+        accessToken = response.access_token;
+        console.log('Access token received:', accessToken);
+        loadClient(); // Load Google Sheets API once authenticated
+      }
+    }
+  });
 }
 
+// Trigger authentication when the "Load Data" button is clicked
+function authenticate() {
+  if (!accessToken) {
+    tokenClient.requestAccessToken();
+  } else {
+    console.log('Already authenticated, access token exists.');
+    loadClient();
+  }
+}
+
+// Load the Google Sheets API client
 function loadClient() {
   gapi.client.setApiKey("AIzaSyAOnBct76Z-dCtn3GtQBvPIaSriGgA8ohw"); // Your API Key
-  return gapi.client.load("https://sheets.googleapis.com/$discovery/rest?version=v4")
-    .then(() => {
-      console.log("GAPI client loaded for API");
-    }, (err) => {
-      console.error("Error loading GAPI client for API", err);
-    });
+  gapi.client.load("https://sheets.googleapis.com/$discovery/rest?version=v4").then(() => {
+    console.log('Google Sheets API loaded');
+    fetchSheetData();
+  }, (err) => {
+    console.error('Error loading Google Sheets API:', err);
+  });
 }
 
+// Fetch data from Google Sheets
 function fetchSheetData() {
   gapi.client.sheets.spreadsheets.values.batchGet({
     spreadsheetId: "1MQIuVmfrruCMyPk1Hc0iGGONHyahDOJ5p_Yd0FhCKQs", // Your Spreadsheet ID
@@ -43,10 +64,11 @@ function fetchSheetData() {
 
     displayData(roofingData, solarData, pointData, yearlyRoofingData, yearlySolarData, totalRoofingSalesPerMonth, totalSolarSalesPerMonth);
   }, (err) => {
-    console.error("Error fetching data", err);
+    console.error('Error fetching data:', err);
   });
 }
 
+// Display data in tile format
 function displayData(roofingData, solarData, pointData, yearlyRoofingData, yearlySolarData, totalRoofingSalesPerMonth, totalSolarSalesPerMonth) {
   const sheetDataDiv = document.getElementById('sheetData');
   sheetDataDiv.innerHTML = ''; // Clear any old data
@@ -127,13 +149,11 @@ function renderStackedSalesChart(totalRoofingSalesPerMonth, totalSolarSalesPerMo
   });
 }
 
-// Load the API and set up the click event for the button
+// Initialize OAuth once the DOM is loaded
 document.addEventListener("DOMContentLoaded", () => {
-  gapi.load("client:auth2", () => {
-    gapi.auth2.init({client_id: '365324237288-6gc4iopjfudka628e8qv70muus8qp4mg.apps.googleusercontent.com'}); // Your Client ID
-  });
-
+  initOAuth(); // Initialize OAuth client
+  
   document.getElementById('loadData').addEventListener('click', () => {
-    authenticate().then(loadClient).then(fetchSheetData);
+    authenticate(); // Start authentication on button click
   });
 });
