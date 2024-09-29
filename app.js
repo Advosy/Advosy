@@ -1,13 +1,15 @@
 function authenticate() {
+  console.log("Starting Google authentication..."); // Log when authentication starts
   return gapi.auth2.getAuthInstance()
     .signIn({scope: "https://www.googleapis.com/auth/spreadsheets.readonly"})
     .then(function() {
       console.log("Sign-in successful");
     },
     function(err) {
-      console.error("Error signing in", err);
+      console.error("Error signing in", err); // Log errors during authentication
     });
 }
+
 
 function loadClient() {
   gapi.client.setApiKey("AIzaSyAOnBct76Z-dCtn3GtQBvPIaSriGgA8ohw"); // Replace with your actual API key
