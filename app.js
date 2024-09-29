@@ -1,3 +1,52 @@
+// Authenticate and load Google Sheets API
+function authenticate() {
+  console.log("Starting authentication...");
+  return gapi.auth2.getAuthInstance()
+    .signIn({scope: "https://www.googleapis.com/auth/spreadsheets.readonly"})
+    .then(() => {
+      console.log("Sign-in successful");
+    }, (err) => {
+      console.error("Error signing in", err);
+    });
+}
+
+function loadClient() {
+  gapi.client.setApiKey("AIzaSyAOnBct76Z-dCtn3GtQBvPIaSriGgA8ohw"); // Your API Key
+  return gapi.client.load("https://sheets.googleapis.com/$discovery/rest?version=v4")
+    .then(() => {
+      console.log("GAPI client loaded for API");
+    }, (err) => {
+      console.error("Error loading GAPI client for API", err);
+    });
+}
+
+function fetchSheetData() {
+  gapi.client.sheets.spreadsheets.values.batchGet({
+    spreadsheetId: "1MQIuVmfrruCMyPk1Hc0iGGONHyahDOJ5p_Yd0FhCKQs", // Your Spreadsheet ID
+    ranges: [
+      "App!A1:G2",  // Monthly Roofing Data
+      "App!A4:I5",  // Monthly Solar Data
+      "App!A7:I7",  // Point Data
+      "App!A10:G11", // Yearly Roofing Data
+      "App!A13:I14", // Yearly Solar Data
+      "App!A16:B28", // Total Roofing Sales Per Month
+      "App!D16:E28"  // Total Solar Sales Per Month
+    ]
+  }).then((response) => {
+    const roofingData = response.result.valueRanges[0].values;
+    const solarData = response.result.valueRanges[1].values;
+    const pointData = response.result.valueRanges[2].values;
+    const yearlyRoofingData = response.result.valueRanges[3].values;
+    const yearlySolarData = response.result.valueRanges[4].values;
+    const totalRoofingSalesPerMonth = response.result.valueRanges[5].values;
+    const totalSolarSalesPerMonth = response.result.valueRanges[6].values;
+
+    displayData(roofingData, solarData, pointData, yearlyRoofingData, yearlySolarData, totalRoofingSalesPerMonth, totalSolarSalesPerMonth);
+  }, (err) => {
+    console.error("Error fetching data", err);
+  });
+}
+
 function displayData(roofingData, solarData, pointData, yearlyRoofingData, yearlySolarData, totalRoofingSalesPerMonth, totalSolarSalesPerMonth) {
   const sheetDataDiv = document.getElementById('sheetData');
   sheetDataDiv.innerHTML = ''; // Clear any old data
