@@ -1,51 +1,3 @@
-// Authenticate and load Google Sheets API
-function authenticate() {
-  return gapi.auth2.getAuthInstance()
-    .signIn({scope: "https://www.googleapis.com/auth/spreadsheets.readonly"})
-    .then(() => {
-      console.log("Sign-in successful");
-    }, (err) => {
-      console.error("Error signing in", err);
-    });
-}
-
-function loadClient() {
-  gapi.client.setApiKey("AIzaSyAOnBct76Z-dCtn3GtQBvPIaSriGgA8ohw"); // Your API Key
-  return gapi.client.load("https://sheets.googleapis.com/$discovery/rest?version=v4")
-    .then(() => {
-      console.log("GAPI client loaded for API");
-    }, (err) => {
-      console.error("Error loading GAPI client for API", err);
-    });
-}
-
-function fetchSheetData() {
-  gapi.client.sheets.spreadsheets.values.batchGet({
-    spreadsheetId: "1MQIuVmfrruCMyPk1Hc0iGGONHyahDOJ5p_Yd0FhCKQs", // Your Spreadsheet ID
-    ranges: [
-      "App!A1:G2",  // Monthly Roofing Data
-      "App!A4:I5",  // Monthly Solar Data
-      "App!A7:I7",  // Point Data
-      "App!A10:G11", // Yearly Roofing Data
-      "App!A13:I14", // Yearly Solar Data
-      "App!A16:B28", // Total Roofing Sales Per Month
-      "App!D16:E28"  // Total Solar Sales Per Month
-    ]
-  }).then((response) => {
-    const roofingData = response.result.valueRanges[0].values;
-    const solarData = response.result.valueRanges[1].values;
-    const pointData = response.result.valueRanges[2].values;
-    const yearlyRoofingData = response.result.valueRanges[3].values;
-    const yearlySolarData = response.result.valueRanges[4].values;
-    const totalRoofingSalesPerMonth = response.result.valueRanges[5].values;
-    const totalSolarSalesPerMonth = response.result.valueRanges[6].values;
-
-    displayData(roofingData, solarData, pointData, yearlyRoofingData, yearlySolarData, totalRoofingSalesPerMonth, totalSolarSalesPerMonth);
-  }, (err) => {
-    console.error("Error fetching data", err);
-  });
-}
-
 function displayData(roofingData, solarData, pointData, yearlyRoofingData, yearlySolarData, totalRoofingSalesPerMonth, totalSolarSalesPerMonth) {
   const sheetDataDiv = document.getElementById('sheetData');
   sheetDataDiv.innerHTML = ''; // Clear any old data
@@ -53,31 +5,31 @@ function displayData(roofingData, solarData, pointData, yearlyRoofingData, yearl
   // Render the stacked bar chart for Total Roofing and Solar Sales Per Month
   renderStackedSalesChart(totalRoofingSalesPerMonth, totalSolarSalesPerMonth);
 
-  // Display data as tiles instead of tables
-  renderDataSectionAsTiles('Monthly Roofing Data', roofingData);
-  renderDataSectionAsTiles('Monthly Solar Data', solarData);
-  renderDataSectionAsTiles('Point Data', pointData);
-  renderDataSectionAsTiles('Yearly Roofing Data', yearlyRoofingData);
-  renderDataSectionAsTiles('Yearly Solar Data', yearlySolarData);
+  // Display data as tiles with correct styling and colors
+  renderDataSectionAsTiles('Monthly Roofing Data', roofingData, 'roofing');
+  renderDataSectionAsTiles('Monthly Solar Data', solarData, 'solar');
+  renderDataSectionAsTiles('Point Data', pointData, 'points');
+  renderDataSectionAsTiles('Yearly Roofing Data', yearlyRoofingData, 'roofing');
+  renderDataSectionAsTiles('Yearly Solar Data', yearlySolarData, 'solar');
 }
 
-// Helper function to display each data section as tiles
-function renderDataSectionAsTiles(title, data) {
+// Helper function to display each data section as tiles with color-coded headers
+function renderDataSectionAsTiles(title, data, type) {
   const sheetDataDiv = document.getElementById('sheetData');
   
   const section = document.createElement('section');
   section.innerHTML = `<h2>${title}</h2>`;
 
   const tileContainer = document.createElement('div');
-  tileContainer.className = 'tile-container'; // Add styling for the tile layout
+  tileContainer.className = 'tile-container';
 
-  // Display each header-value pair as a tile
+  // Display each header-value pair as a tile, apply color coding for solar and roofing
   data[0].forEach((header, index) => {
     const tile = document.createElement('div');
-    tile.className = 'tile';
+    tile.className = `tile ${type}`; // Add type-specific class for color coding
     tile.innerHTML = `
-      <h3>${header}</h3>
-      <p>${data[1][index] || 'N/A'}</p> <!-- Handle missing data -->
+      <p class="tile-value">${data[1][index] || 'N/A'}</p> <!-- Value -->
+      <h3 class="tile-header">${header}</h3> <!-- Header -->
     `;
     tileContainer.appendChild(tile);
   });
@@ -107,12 +59,12 @@ function renderStackedSalesChart(totalRoofingSalesPerMonth, totalSolarSalesPerMo
         {
           label: 'Roofing Sales',
           data: salesRoofing,
-          backgroundColor: '#4CAF50'
+          backgroundColor: '#4678bc' // Navy blue for roofing sales
         },
         {
           label: 'Solar Sales',
           data: salesSolar,
-          backgroundColor: '#FFA500'
+          backgroundColor: '#e0bc67' // Gold for solar sales
         }
       ]
     },
