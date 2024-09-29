@@ -1,35 +1,74 @@
-/* Styling for data tables */
-.styled-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 20px;
-  font-family: 'Arial', sans-serif;
-  font-size: 14px;
-  text-align: left;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+/* General Styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+  background-color: #f4f4f4;
+  text-align: center;
 }
 
-.styled-table th, .styled-table td {
-  padding: 12px 15px;
-  border: 1px solid #ddd;
+h1 {
+  font-size: 24px;
+  color: #333;
 }
 
-.styled-table th {
+button {
   background-color: #4CAF50;
   color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px;
 }
 
-.styled-table tr:nth-child(even) {
-  background-color: #f2f2f2;
+button:hover {
+  background-color: #45a049;
 }
 
-.styled-table tr:hover {
-  background-color: #f1f1f1;
+#sheetData {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Section styles */
+/* Tile Container */
+.tile-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Auto-fit 3 tiles across, adjust based on screen size */
+  gap: 10px;
+}
+
+/* Tile Styles */
+.tile {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.tile h3 {
+  margin-top: 0;
+  color: #4CAF50;
+}
+
+.tile p {
+  font-size: 14px;
+  margin: 0;
+}
+
+/* Chart Styles */
+canvas {
+  max-width: 100%;
+  margin-top: 20px;
+}
+
+/* Responsive Section Titles */
 section h2 {
-  font-size: 18px;
-  margin-bottom: 10px;
+  font-size: 20px;
+  margin-bottom: 15px;
+  color: #333;
 }
-
