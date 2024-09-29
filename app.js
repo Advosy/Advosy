@@ -1,21 +1,26 @@
-// Initialize Google Identity Services
+// Initialize Google Identity Services once the GIS script is fully loaded
 let tokenClient;
 
 document.addEventListener("DOMContentLoaded", function () {
   console.log("DOM fully loaded and parsed");
 
-  // Initialize GIS token client
-  tokenClient = google.accounts.oauth2.initTokenClient({
-    client_id: '365324237288-6gc4iopjfudka628e8qv70muus8qp4mg.apps.googleusercontent.com', // Your Client ID
-    scope: 'https://www.googleapis.com/auth/spreadsheets.readonly',
-    callback: handleTokenResponse // Define a callback to handle the response
-  });
+  // Ensure GIS script is loaded before using it
+  window.onload = function () {
+    console.log("Google Identity Services (GIS) script loaded");
 
-  // Set up the click event for the button
-  document.getElementById('loadData').addEventListener('click', function() {
-    console.log("Button clicked, starting authentication...");
-    tokenClient.requestAccessToken(); // Request token for the user
-  });
+    // Initialize GIS token client
+    tokenClient = google.accounts.oauth2.initTokenClient({
+      client_id: '365324237288-6gc4iopjfudka628e8qv70muus8qp4mg.apps.googleusercontent.com', // Your Client ID
+      scope: 'https://www.googleapis.com/auth/spreadsheets.readonly',
+      callback: handleTokenResponse // Define a callback to handle the response
+    });
+
+    // Set up the click event for the button
+    document.getElementById('loadData').addEventListener('click', function() {
+      console.log("Button clicked, starting authentication...");
+      tokenClient.requestAccessToken(); // Request token for the user
+    });
+  };
 });
 
 // Function to handle the token response
