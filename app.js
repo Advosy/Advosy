@@ -168,3 +168,4 @@ document.addEventListener("DOMContentLoaded", () => {
     authenticate(); // Start authentication on button click
   });
 });
+
