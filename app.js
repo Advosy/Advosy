@@ -50,7 +50,7 @@ function loadClient() {
 function fetchSheetData() {
   console.log('Fetching data from Google Sheets...');
   gapi.client.sheets.spreadsheets.values.get({
-    "spreadsheetId": "1MQIuVmfrruCMyPk1Hc0iGGONHyahDOJ5p_Yd0FhCKQs",
+    "spreadsheetId": "1MQIuVmfrruCMyPk1Hc0iGGONHyahDOJ5p_Yd0FhCKQs", // Your spreadsheet ID
     "range": "App!A1:I34" // Adjust the range as needed
   })
   .then(function(response) {
