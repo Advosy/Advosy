@@ -2,8 +2,13 @@
 let tokenClient;
 let accessToken = null;
 
-// Initialize the OAuth client
+// Wait for the GIS script to load before initializing OAuth
 function initOAuth() {
+  if (typeof google === 'undefined') {
+    console.error('Google Identity Services script not loaded yet.');
+    return;
+  }
+
   tokenClient = google.accounts.oauth2.initTokenClient({
     client_id: '365324237288-6gc4iopjfudka628e8qv70muus8qp4mg.apps.googleusercontent.com', // Your Client ID
     scope: 'https://www.googleapis.com/auth/spreadsheets.readonly',
@@ -151,6 +156,12 @@ function renderStackedSalesChart(totalRoofingSalesPerMonth, totalSolarSalesPerMo
 
 // Initialize OAuth once the DOM is loaded
 document.addEventListener("DOMContentLoaded", () => {
+  // Ensure the Google Identity Services script is fully loaded
+  if (typeof google === 'undefined') {
+    console.error('Google Identity Services script not loaded yet.');
+    return;
+  }
+
   initOAuth(); // Initialize OAuth client
   
   document.getElementById('loadData').addEventListener('click', () => {
