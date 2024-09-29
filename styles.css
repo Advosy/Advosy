@@ -1,73 +1,60 @@
-/* Main container styling */
-#sheetData {
-  margin: 20px auto;
+/* General Styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
   padding: 20px;
-  max-width: 90%;
+  background-color: #f4f4f4;
+  text-align: center;
 }
 
-/* General table styling */
-.styled-table, table {
-  width: 100%;
-  border-collapse: collapse;
-  font-family: 'Arial', sans-serif;
-  font-size: 14px;
-  text-align: left;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  margin-bottom: 10px;
-}
-
-.styled-table th, .styled-table td, table th, table td {
-  padding: 12px 15px;
-  border: 1px solid #ddd;
-}
-
-.styled-table th, table th {
-  background-color: #4CAF50;
-  color: white;
-}
-
-.styled-table tr:nth-child(even), table tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
-
-.styled-table tr:hover, table tr:hover {
-  background-color: #f1f1f1;
-}
-
-/* Section styling */
-section {
-  margin-bottom: 20px;
-}
-
-/* Headings styling */
-h2 {
-  font-size: 18px;
+h1 {
+  font-size: 24px;
   color: #333;
 }
 
-/* Mobile-friendly card style */
-@media screen and (max-width: 768px) {
-  .card {
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    margin: 10px 0;
-    padding: 15px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  }
-
-  .card h3 {
-    margin-top: 0;
-    color: #4CAF50; /* Card title color */
-  }
-
-  .card p {
-    font-size: 14px;
-    margin-bottom: 5px;
-  }
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px;
 }
 
-/* Style the canvas for the chart */
+button:hover {
+  background-color: #45a049;
+}
+
+#sheetData {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Chart Styles */
 canvas {
   max-width: 100%;
   margin-top: 20px;
+}
+
+/* Styling for data sections (if needed) */
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  font-size: 16px;
+  text-align: left;
+}
+
+.styled-table th, .styled-table td {
+  padding: 12px;
+  border: 1px solid #ddd;
+}
+
+.styled-table th {
+  background-color: #4CAF50;
+  color: white;
 }
