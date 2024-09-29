@@ -30,31 +30,46 @@ function handleTokenResponse(response) {
 
 // Load the Google Sheets API
 function loadClient() {
+  console.log('Loading Google Sheets API...');
   gapi.client.setApiKey("AIzaSyAOnBct76Z-dCtn3GtQBvPIaSriGgA8ohw"); // Your API key
-  gapi.client.load("https://sheets.googleapis.com/$discovery/rest?version=v4").then(function() {
-    console.log("GAPI client loaded for API");
-    fetchSheetData(); // Fetch the data once the client is loaded
-  });
+  gapi.client.load("https://sheets.googleapis.com/$discovery/rest?version=v4")
+    .then(function() {
+      console.log("GAPI client loaded for API");
+      fetchSheetData(); // Fetch the data once the client is loaded
+    }, function(err) {
+      console.error("Error loading GAPI client:", err);
+    });
 }
 
 // Fetch data from Google Sheets
 function fetchSheetData() {
+  console.log('Fetching data from Google Sheets...');
   gapi.client.sheets.spreadsheets.values.get({
     "spreadsheetId": "1MQIuVmfrruCMyPk1Hc0iGGONHyahDOJ5p_Yd0FhCKQs",
-    "range": "App!A1:I34"
-  }).then(function(response) {
+    "range": "App!A1:I34" // Adjust the range as needed
+  })
+  .then(function(response) {
     console.log("Data fetched successfully:", response.result.values);
-    displayData(response.result.values);
+    if (!response.result.values || response.result.values.length === 0) {
+      console.warn("No data returned from the sheet.");
+    } else {
+      displayData(response.result.values);
+    }
   }, function(error) {
-    console.error("Error fetching data:", error);
+    console.error("Error fetching data from Google Sheets:", error);
   });
 }
 
 // Function to display the data
 function displayData(data) {
+  console.log("Displaying data:", data);
   const sheetDataDiv = document.getElementById('sheetData');
   sheetDataDiv.innerHTML = ''; // Clear old data
 
-  // Process and display data here (as per your earlier logic)
-  // You can add your own logic to display the data in cards or tables
+  // Assuming the data is an array of rows
+  data.forEach((row, index) => {
+    const rowDiv = document.createElement('div');
+    rowDiv.textContent = `Row ${index + 1}: ${row.join(', ')}`;
+    sheetDataDiv.appendChild(rowDiv);
+  });
 }
