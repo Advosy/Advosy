@@ -50,12 +50,55 @@ function displayData(roofingData, solarData, pointData, yearlyRoofingData, yearl
   const sheetDataDiv = document.getElementById('sheetData');
   sheetDataDiv.innerHTML = ''; // Clear any old data
 
-  // Render the stacked bar chart for Roofing and Solar sales per month
+  // Render the stacked bar chart for Total Roofing and Solar Sales Per Month
   renderStackedSalesChart(totalRoofingSalesPerMonth, totalSolarSalesPerMonth);
+
+  // Display Monthly Roofing Data
+  renderDataSection('Monthly Roofing Data', roofingData);
+
+  // Display Monthly Solar Data
+  renderDataSection('Monthly Solar Data', solarData);
+
+  // Display Point Data
+  renderDataSection('Point Data', pointData);
+
+  // Display Yearly Roofing Data
+  renderDataSection('Yearly Roofing Data', yearlyRoofingData);
+
+  // Display Yearly Solar Data
+  renderDataSection('Yearly Solar Data', yearlySolarData);
+}
+
+// Helper function to display each data section as a card or table
+function renderDataSection(title, data) {
+  const sheetDataDiv = document.getElementById('sheetData');
   
-  // Display other data (this can be expanded as needed)
-  // You can format the Monthly/Yearly Roofing/Solar data and Point data into cards or tables here
-  // For simplicity, I'm focusing on the chart rendering for this example
+  const section = document.createElement('section');
+  section.innerHTML = `<h2>${title}</h2>`;
+
+  const table = document.createElement('table');
+  table.className = 'styled-table';
+
+  // Render the header row
+  const headerRow = document.createElement('tr');
+  data[0].forEach(header => {
+    const th = document.createElement('th');
+    th.textContent = header;
+    headerRow.appendChild(th);
+  });
+  table.appendChild(headerRow);
+
+  // Render the data row
+  const dataRow = document.createElement('tr');
+  data[1].forEach(value => {
+    const td = document.createElement('td');
+    td.textContent = value || 'N/A'; // Handle missing data
+    dataRow.appendChild(td);
+  });
+  table.appendChild(dataRow);
+
+  section.appendChild(table);
+  sheetDataDiv.appendChild(section);
 }
 
 // Render the stacked bar chart for Total Roofing and Solar Sales Per Month
