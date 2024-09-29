@@ -10,7 +10,7 @@ function authenticate() {
 }
 
 function loadClient() {
-  gapi.client.setApiKey("YOUR_API_KEY"); // Replace with your actual API key
+  gapi.client.setApiKey("AIzaSyAOnBct76Z-dCtn3GtQBvPIaSriGgA8ohw"); // Replace with your actual API key
   return gapi.client.load("https://sheets.googleapis.com/$discovery/rest?version=v4")
     .then(() => {
       console.log("GAPI client loaded for API");
@@ -21,7 +21,7 @@ function loadClient() {
 
 function fetchSheetData() {
   gapi.client.sheets.spreadsheets.values.batchGet({
-    spreadsheetId: "YOUR_SPREADSHEET_ID", // Replace with your actual Spreadsheet ID
+    spreadsheetId: "1MQIuVmfrruCMyPk1Hc0iGGONHyahDOJ5p_Yd0FhCKQs", // Replace with your actual Spreadsheet ID
     ranges: [
       "App!A1:G2",  // Monthly Roofing Data
       "App!A4:I5",  // Monthly Solar Data
@@ -109,7 +109,7 @@ function renderStackedSalesChart(totalRoofingSalesPerMonth, totalSolarSalesPerMo
 // Load the API and set up the click event for the button
 document.addEventListener("DOMContentLoaded", () => {
   gapi.load("client:auth2", () => {
-    gapi.auth2.init({client_id: 'YOUR_CLIENT_ID'}); // Initialize with your Client ID
+    gapi.auth2.init({client_id: '365324237288-6gc4iopjfudka628e8qv70muus8qp4mg.apps.googleusercontent.com'}); // Initialize with your Client ID
   });
 
   document.getElementById('loadData').addEventListener('click', () => {
