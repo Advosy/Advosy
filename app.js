@@ -43,10 +43,12 @@ function authenticate() {
 
 // Load the Google Sheets API client
 function loadClient() {
+  console.log('Attempting to load Google Sheets API...');
+  
   gapi.client.setApiKey("AIzaSyAOnBct76Z-dCtn3GtQBvPIaSriGgA8ohw"); // Your API Key
   gapi.client.load("https://sheets.googleapis.com/$discovery/rest?version=v4").then(() => {
-    console.log('Google Sheets API loaded');
-    fetchSheetData();
+    console.log('Google Sheets API loaded successfully.');
+    fetchSheetData(); // Proceed to fetch the data
   }, (err) => {
     console.error('Error loading Google Sheets API:', err);
   });
@@ -54,6 +56,8 @@ function loadClient() {
 
 // Fetch data from Google Sheets
 function fetchSheetData() {
+  console.log('Attempting to fetch data from Google Sheets...');
+
   gapi.client.sheets.spreadsheets.values.batchGet({
     spreadsheetId: "1MQIuVmfrruCMyPk1Hc0iGGONHyahDOJ5p_Yd0FhCKQs", // Your Spreadsheet ID
     ranges: [
@@ -66,6 +70,8 @@ function fetchSheetData() {
       "App!D16:E28"  // Total Solar Sales Per Month
     ]
   }).then((response) => {
+    console.log('Data successfully fetched from Google Sheets:', response);
+
     const roofingData = response.result.valueRanges[0].values;
     const solarData = response.result.valueRanges[1].values;
     const pointData = response.result.valueRanges[2].values;
@@ -76,12 +82,14 @@ function fetchSheetData() {
 
     displayData(roofingData, solarData, pointData, yearlyRoofingData, yearlySolarData, totalRoofingSalesPerMonth, totalSolarSalesPerMonth);
   }, (err) => {
-    console.error('Error fetching data:', err);
+    console.error('Error fetching data from Google Sheets:', err);
   });
 }
 
 // Display data in tile format
 function displayData(roofingData, solarData, pointData, yearlyRoofingData, yearlySolarData, totalRoofingSalesPerMonth, totalSolarSalesPerMonth) {
+  console.log('Displaying data...');
+
   const sheetDataDiv = document.getElementById('sheetData');
   sheetDataDiv.innerHTML = ''; // Clear any old data
 
@@ -123,6 +131,8 @@ function renderDataSectionAsTiles(title, data, type) {
 
 // Render the stacked bar chart for Total Roofing and Solar Sales Per Month
 function renderStackedSalesChart(totalRoofingSalesPerMonth, totalSolarSalesPerMonth) {
+  console.log('Rendering the stacked sales chart...');
+
   const monthsRoofing = totalRoofingSalesPerMonth.slice(1).map(row => row[0]);
   const salesRoofing = totalRoofingSalesPerMonth.slice(1).map(row => parseInt(row[1], 10));
   const monthsSolar = totalSolarSalesPerMonth.slice(1).map(row => row[0]);
