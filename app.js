@@ -4,7 +4,7 @@ let accessToken = null;
 
 // Wait for the GIS script to load before initializing OAuth
 function initOAuth() {
-  if (typeof google === 'undefined') {
+  if (typeof google === 'undefined' || typeof google.accounts === 'undefined') {
     console.error('Google Identity Services script not loaded yet.');
     return;
   }
@@ -157,7 +157,7 @@ function renderStackedSalesChart(totalRoofingSalesPerMonth, totalSolarSalesPerMo
 // Initialize OAuth once the DOM is loaded
 document.addEventListener("DOMContentLoaded", () => {
   // Ensure the Google Identity Services script is fully loaded
-  if (typeof google === 'undefined') {
+  if (typeof google === 'undefined' || typeof google.accounts === 'undefined') {
     console.error('Google Identity Services script not loaded yet.');
     return;
   }
@@ -168,4 +168,3 @@ document.addEventListener("DOMContentLoaded", () => {
     authenticate(); // Start authentication on button click
   });
 });
-
