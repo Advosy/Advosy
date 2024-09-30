@@ -14,19 +14,11 @@
   <!-- Google Identity Services (GIS) script -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 
-  <!-- Load Google API (gapi) script directly -->
-  <script src="https://apis.google.com/js/api.js" onload="handleClientLoad()"></script> <!-- Load gapi -->
+  <!-- Load Google API (gapi) script directly without onload -->
+  <script src="https://apis.google.com/js/api.js" async defer></script> <!-- Load gapi -->
 
   <!-- Custom stylesheet -->
   <link rel="stylesheet" href="styles.css">
-  
-  <!-- Add handleClientLoad directly to index.html -->
-  <script>
-    function handleClientLoad() {
-      console.log('gapi client loading...');
-      gapi.load('client', initializeGapiClient); // Load gapi client
-    }
-  </script>
   
 </head>
 <body style="background-color: white;">
