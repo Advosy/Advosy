@@ -4,7 +4,7 @@ let accessToken = null;
 // Initialize Google Identity Services for OAuth
 function initOAuth() {
   console.log('Initializing OAuth...');
-  
+
   if (typeof google === 'undefined' || typeof google.accounts === 'undefined') {
     console.error('Google Identity Services script not loaded yet.');
     return;
@@ -25,10 +25,17 @@ function initOAuth() {
   });
 }
 
-// GIS script loaded handler
-function gisLoaded() {
-  console.log('Google Identity Services script loaded.');
-  initOAuth(); // Initialize OAuth after GIS script is loaded
+// This function will wait for GIS to load before initializing OAuth
+function ensureGISLoaded() {
+  console.log('Ensuring Google Identity Services script is loaded...');
+
+  // Wait until GIS is fully loaded before initializing
+  if (typeof google === 'undefined' || typeof google.accounts === 'undefined') {
+    setTimeout(ensureGISLoaded, 100); // Retry every 100ms until loaded
+  } else {
+    console.log('Google Identity Services loaded.');
+    initOAuth(); // Initialize OAuth when GIS is loaded
+  }
 }
 
 // Trigger authentication when the "Load Data" button is clicked
@@ -50,7 +57,7 @@ function authenticate() {
 // Load the Google Sheets API client
 function loadClient() {
   console.log('Attempting to load Google Sheets API...');
-  
+
   gapi.client.setApiKey("AIzaSyAOnBct76Z-dCtn3GtQBvPIaSriGgA8ohw"); // Your API Key
   gapi.client.load("https://sheets.googleapis.com/$discovery/rest?version=v4").then(() => {
     console.log('Google Sheets API loaded successfully.');
@@ -181,6 +188,8 @@ function renderStackedSalesChart(totalRoofingSalesPerMonth, totalSolarSalesPerMo
 
 // Initialize OAuth when the GIS script is loaded
 document.addEventListener("DOMContentLoaded", () => {
+  console.log('DOM fully loaded, ensuring GIS is loaded...');
+  ensureGISLoaded(); // Ensure GIS is loaded first
   document.getElementById('loadData').addEventListener('click', () => {
     authenticate(); // Start authentication on button click
   });
