@@ -12,6 +12,12 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <!-- Google Identity Services (GIS) for OAuth -->
+  <script>
+    function gisLoaded() {
+      console.log('Google Identity Services script loaded.');
+      initOAuth(); // Call initOAuth directly here
+    }
+  </script>
   <script src="https://accounts.google.com/gsi/client" async defer onload="gisLoaded()"></script>
 
   <!-- Custom stylesheet -->
@@ -31,17 +37,5 @@
 
   <!-- Your custom JavaScript file -->
   <script src="app.js"></script>
-
-  <!-- Optional: Service Worker for PWA functionality -->
-  <!-- Uncomment if you have a service-worker.js file in place -->
-  <!--
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/service-worker.js').then(function() {
-        console.log('Service Worker Registered');
-      });
-    }
-  </script>
-  -->
 </body>
 </html>
