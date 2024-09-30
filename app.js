@@ -3,6 +3,26 @@ let accessToken = null;
 let gisLoadedFlag = false; // Flag to track GIS script loading
 let gapiLoadedFlag = false; // Flag to track GAPI script loading
 
+// Handle gapi client load
+function handleClientLoad() {
+  console.log('gapi client loading...');
+  gapi.load('client', initializeGapiClient); // Load gapi client
+}
+
+// Initialize Google API client (gapi)
+function initializeGapiClient() {
+  console.log('Initializing gapi client...');
+  gapi.client.init({
+    apiKey: 'AIzaSyAOnBct76Z-dCtn3GtQBvPIaSriGgA8ohw', // Your API Key
+  }).then(() => {
+    console.log('gapi client initialized successfully.');
+    gapiLoadedFlag = true;
+  }, (error) => {
+    console.error('Error initializing gapi client:', error);
+    alert('Error initializing Google API client: ' + JSON.stringify(error));
+  });
+}
+
 // Initialize Google Identity Services for OAuth
 function initOAuth() {
   console.log('Initializing OAuth...');
@@ -44,18 +64,6 @@ function ensureGISLoaded() {
   }
 }
 
-// Ensure Google API (gapi) is fully loaded before attempting to use Sheets API
-function ensureGapiLoaded() {
-  console.log('Checking if Google API (gapi) is loaded...');
-  
-  // Load gapi client explicitly
-  gapi.load('client', () => {
-    console.log('gapi.client loaded.');
-    gapiLoadedFlag = true;
-    loadSheetsClient(); // Load Sheets API once gapi is ready
-  });
-}
-
 // Trigger authentication when the "Load Data" button is clicked
 function authenticate() {
   if (!gisLoadedFlag) {
@@ -75,21 +83,20 @@ function authenticate() {
     tokenClient.requestAccessToken();
   } else {
     console.log('Already authenticated, access token exists.');
-    ensureGapiLoaded(); // Ensure gapi is loaded and then load Sheets API
+    loadSheetsClient(); // Load Google Sheets API
   }
 }
 
 // Load the Google Sheets API client
 function loadSheetsClient() {
   if (!gapiLoadedFlag) {
-    console.error('gapi is not fully loaded yet.');
+    console.error('gapi client is not fully loaded yet.');
     return;
   }
 
   console.log('Attempting to load Google Sheets API...');
   
   try {
-    gapi.client.setApiKey("AIzaSyAOnBct76Z-dCtn3GtQBvPIaSriGgA8ohw"); // Your API Key
     gapi.client.load("https://sheets.googleapis.com/$discovery/rest?version=v4").then(() => {
       console.log('Google Sheets API loaded successfully.');
       fetchSheetData(); // Proceed to fetch the data
