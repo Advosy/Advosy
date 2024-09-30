@@ -97,6 +97,13 @@ function fetchSheetData() {
     ]
   }).then((response) => {
     console.log('Data successfully fetched from Google Sheets:', response);
+    
+    // Handle empty data if any response is missing
+    if (!response.result.valueRanges || response.result.valueRanges.length === 0) {
+      console.error('No data found in the response:', response);
+      alert('No data found in the spreadsheet. Please check the spreadsheet ID and ranges.');
+      return;
+    }
 
     const roofingData = response.result.valueRanges[0].values;
     const solarData = response.result.valueRanges[1].values;
@@ -196,14 +203,3 @@ function renderStackedSalesChart(totalRoofingSalesPerMonth, totalSolarSalesPerMo
       }
     }
   });
-}
-
-// Initialize GIS and set up the event listener for the button click
-document.addEventListener("DOMContentLoaded", () => {
-  console.log('DOM fully loaded, ensuring GIS is loaded...');
-  ensureGISLoaded(); // Ensure GIS is loaded first
-
-  document.getElementById('loadData').addEventListener('click', () => {
-    authenticate(); // Start authentication on button click
-  });
-});
