@@ -1,15 +1,18 @@
 let tokenClient;
 let accessToken = null;
+let gisLoadedFlag = false; // Flag to track GIS script loading
 
 // Initialize Google Identity Services for OAuth
 function initOAuth() {
   console.log('Initializing OAuth...');
-
+  
   if (typeof google === 'undefined' || typeof google.accounts === 'undefined') {
-    console.error('Google Identity Services script not loaded yet.');
+    console.error('Google Identity Services script not loaded yet. Retrying...');
+    setTimeout(initOAuth, 500); // Retry after 500ms if GIS is not loaded yet
     return;
   }
 
+  console.log('Google Identity Services loaded, setting up token client...');
   tokenClient = google.accounts.oauth2.initTokenClient({
     client_id: '365324237288-6gc4iopjfudka628e8qv70muus8qp4mg.apps.googleusercontent.com', // Your Client ID
     scope: 'https://www.googleapis.com/auth/spreadsheets.readonly',
@@ -23,25 +26,34 @@ function initOAuth() {
       }
     }
   });
+
+  gisLoadedFlag = true; // Set flag to true after successful initialization
 }
 
-// This function will wait for GIS to load before initializing OAuth
+// Ensure GIS script is fully loaded before initializing OAuth
 function ensureGISLoaded() {
-  console.log('Ensuring Google Identity Services script is loaded...');
+  console.log('Checking if Google Identity Services is loaded...');
 
   // Wait until GIS is fully loaded before initializing
   if (typeof google === 'undefined' || typeof google.accounts === 'undefined') {
-    setTimeout(ensureGISLoaded, 100); // Retry every 100ms until loaded
+    setTimeout(ensureGISLoaded, 100); // Retry every 100ms until GIS is available
   } else {
-    console.log('Google Identity Services loaded.');
+    console.log('Google Identity Services script loaded.');
     initOAuth(); // Initialize OAuth when GIS is loaded
   }
 }
 
 // Trigger authentication when the "Load Data" button is clicked
 function authenticate() {
+  if (!gisLoadedFlag) {
+    console.error('GIS script is not fully loaded yet.');
+    alert('Please wait for the Google Identity Services to load before proceeding.');
+    return;
+  }
+
   if (!tokenClient) {
     console.error('tokenClient is not initialized yet.');
+    alert('OAuth client is not ready. Please try again in a moment.');
     return;
   }
 
@@ -57,7 +69,7 @@ function authenticate() {
 // Load the Google Sheets API client
 function loadClient() {
   console.log('Attempting to load Google Sheets API...');
-
+  
   gapi.client.setApiKey("AIzaSyAOnBct76Z-dCtn3GtQBvPIaSriGgA8ohw"); // Your API Key
   gapi.client.load("https://sheets.googleapis.com/$discovery/rest?version=v4").then(() => {
     console.log('Google Sheets API loaded successfully.');
@@ -186,10 +198,11 @@ function renderStackedSalesChart(totalRoofingSalesPerMonth, totalSolarSalesPerMo
   });
 }
 
-// Initialize OAuth when the GIS script is loaded
+// Initialize GIS and set up the event listener for the button click
 document.addEventListener("DOMContentLoaded", () => {
   console.log('DOM fully loaded, ensuring GIS is loaded...');
   ensureGISLoaded(); // Ensure GIS is loaded first
+
   document.getElementById('loadData').addEventListener('click', () => {
     authenticate(); // Start authentication on button click
   });
