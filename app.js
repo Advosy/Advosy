@@ -1,10 +1,17 @@
-// Initialize Google Identity Services for OAuth
 let tokenClient;
 let accessToken = null;
+let gisLoadedFlag = false;
 
-// Wait for the GIS script to load before initializing OAuth
+// This function is called when the GIS script has fully loaded
+function gisLoaded() {
+  console.log('Google Identity Services script loaded.');
+  gisLoadedFlag = true;
+  initOAuth();
+}
+
+// Initialize Google Identity Services for OAuth
 function initOAuth() {
-  if (typeof google === 'undefined' || typeof google.accounts === 'undefined') {
+  if (!gisLoadedFlag) {
     console.error('Google Identity Services script not loaded yet.');
     return;
   }
@@ -154,16 +161,8 @@ function renderStackedSalesChart(totalRoofingSalesPerMonth, totalSolarSalesPerMo
   });
 }
 
-// Initialize OAuth once the DOM is loaded
+// Initialize OAuth when the GIS script is loaded
 document.addEventListener("DOMContentLoaded", () => {
-  // Ensure the Google Identity Services script is fully loaded
-  if (typeof google === 'undefined' || typeof google.accounts === 'undefined') {
-    console.error('Google Identity Services script not loaded yet.');
-    return;
-  }
-
-  initOAuth(); // Initialize OAuth client
-  
   document.getElementById('loadData').addEventListener('click', () => {
     authenticate(); // Start authentication on button click
   });
