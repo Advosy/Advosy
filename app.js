@@ -16,7 +16,7 @@ function initializeGapiClient() {
     apiKey: 'AIzaSyAOnBct76Z-dCtn3GtQBvPIaSriGgA8ohw', // Your API Key
   }).then(() => {
     console.log('gapi client initialized successfully.');
-    gapiLoadedFlag = true;
+    gapiLoadedFlag = true; // Set flag to true once fully loaded
   }, (error) => {
     console.error('Error initializing gapi client:', error);
     alert('Error initializing Google API client: ' + JSON.stringify(error));
@@ -48,7 +48,7 @@ function initOAuth() {
     }
   });
 
-  gisLoadedFlag = true;
+  gisLoadedFlag = true; // Set flag to true after successful initialization
 }
 
 // Ensure GIS script is fully loaded before initializing OAuth
