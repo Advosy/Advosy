@@ -11,6 +11,12 @@
   <!-- Chart.js for rendering charts -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+  <!-- Google API Loader -->
+  <script src="https://apis.google.com/js/api.js"></script> <!-- Explicitly load gapi -->
+
+  <!-- Google Identity Services (GIS) script -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
   <!-- Custom stylesheet -->
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -22,11 +28,6 @@
 
   <!-- Div to display the Google Sheets data -->
   <div id="sheetData"></div>
-
-  <!-- Google API Loader -->
-  <script src="https://apis.google.com/js/api.js"></script>
-  <!-- Google Identity Services (GIS) script -->
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
 
   <!-- Your custom JavaScript file -->
   <script src="app.js"></script>
