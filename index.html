@@ -12,7 +12,7 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <!-- Google Identity Services (GIS) for OAuth -->
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="https://accounts.google.com/gsi/client" async defer onload="gisLoaded()"></script>
 
   <!-- Custom stylesheet -->
   <link rel="stylesheet" href="styles.css">
@@ -21,7 +21,7 @@
   <h1>Google Sheets Data</h1>
 
   <!-- Button to trigger loading of Google Sheets data -->
-  <button id="loadData">Load Data from Sheet</button>
+  <button id="loadData" style="background-color: #4678bc; color: white; border: none; padding: 10px 20px;">Load Data from Sheet</button>
 
   <!-- Div to display the Google Sheets data -->
   <div id="sheetData"></div>
