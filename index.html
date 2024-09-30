@@ -11,16 +11,16 @@
   <!-- Chart.js for rendering charts -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <!-- Google API Loader -->
-  <script src="https://apis.google.com/js/api.js"></script> <!-- Explicitly load gapi -->
-
   <!-- Google Identity Services (GIS) script -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+  <!-- Load Google API (gapi) script directly -->
+  <script src="https://apis.google.com/js/api.js" onload="handleClientLoad()"></script> <!-- Load gapi -->
 
   <!-- Custom stylesheet -->
   <link rel="stylesheet" href="styles.css">
 </head>
-<body style="background-color: white;"> <!-- White background color for header and footer -->
+<body style="background-color: white;">
   <h1>Advosy Connect Sales Stats</h1>
 
   <!-- Button to trigger loading of Google Sheets data -->
