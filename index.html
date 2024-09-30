@@ -19,6 +19,15 @@
 
   <!-- Custom stylesheet -->
   <link rel="stylesheet" href="styles.css">
+  
+  <!-- Add handleClientLoad directly to index.html -->
+  <script>
+    function handleClientLoad() {
+      console.log('gapi client loading...');
+      gapi.load('client', initializeGapiClient); // Load gapi client
+    }
+  </script>
+  
 </head>
 <body style="background-color: white;">
   <h1>Advosy Connect Sales Stats</h1>
