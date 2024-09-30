@@ -1,6 +1,7 @@
 let tokenClient;
 let accessToken = null;
 let gisLoadedFlag = false; // Flag to track GIS script loading
+let gapiLoadedFlag = false; // Flag to track GAPI script loading
 
 // Initialize Google Identity Services for OAuth
 function initOAuth() {
@@ -22,7 +23,7 @@ function initOAuth() {
       } else {
         accessToken = response.access_token;
         console.log('Access token received:', accessToken);
-        loadClient(); // Load Google Sheets API once authenticated
+        loadSheetsClient(); // Load Google Sheets API once authenticated
       }
     }
   });
@@ -40,6 +41,20 @@ function ensureGISLoaded() {
   } else {
     console.log('Google Identity Services script loaded.');
     initOAuth(); // Initialize OAuth when GIS is loaded
+  }
+}
+
+// Ensure Google API (gapi) is fully loaded before attempting to use Sheets API
+function ensureGapiLoaded() {
+  console.log('Checking if Google API (gapi) is loaded...');
+  
+  // Wait until gapi is fully loaded before trying to set the API key
+  if (typeof gapi === 'undefined' || typeof gapi.client === 'undefined') {
+    setTimeout(ensureGapiLoaded, 100); // Retry every 100ms until gapi is available
+  } else {
+    console.log('Google API (gapi) script loaded.');
+    gapiLoadedFlag = true;
+    loadSheetsClient(); // Load Sheets API once gapi is ready
   }
 }
 
@@ -62,14 +77,19 @@ function authenticate() {
     tokenClient.requestAccessToken();
   } else {
     console.log('Already authenticated, access token exists.');
-    loadClient();
+    ensureGapiLoaded(); // Ensure gapi is loaded and then load Sheets API
   }
 }
 
 // Load the Google Sheets API client
-function loadClient() {
-  console.log('Attempting to load Google Sheets API...');
+function loadSheetsClient() {
+  if (!gapiLoadedFlag) {
+    console.error('gapi is not fully loaded yet.');
+    return;
+  }
 
+  console.log('Attempting to load Google Sheets API...');
+  
   try {
     gapi.client.setApiKey("AIzaSyAOnBct76Z-dCtn3GtQBvPIaSriGgA8ohw"); // Your API Key
     gapi.client.load("https://sheets.googleapis.com/$discovery/rest?version=v4").then(() => {
