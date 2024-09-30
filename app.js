@@ -3,12 +3,6 @@ let accessToken = null;
 let gisLoadedFlag = false;
 let gapiLoadedFlag = false;
 
-// Handle gapi client load
-function handleClientLoad() {
-  console.log('gapi client loading...');
-  gapi.load('client', initializeGapiClient); // Load gapi client
-}
-
 // Initialize Google API client (gapi)
 function initializeGapiClient() {
   console.log('Initializing gapi client...');
@@ -16,7 +10,7 @@ function initializeGapiClient() {
     apiKey: 'AIzaSyAOnBct76Z-dCtn3GtQBvPIaSriGgA8ohw', // Your API Key
   }).then(() => {
     console.log('gapi client initialized successfully.');
-    gapiLoadedFlag = true; // Set flag to true once fully loaded
+    gapiLoadedFlag = true;
   }, (error) => {
     console.error('Error initializing gapi client:', error);
     alert('Error initializing Google API client: ' + JSON.stringify(error));
