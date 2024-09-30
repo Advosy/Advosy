@@ -48,14 +48,12 @@ function ensureGISLoaded() {
 function ensureGapiLoaded() {
   console.log('Checking if Google API (gapi) is loaded...');
   
-  // Wait until gapi is fully loaded before trying to set the API key
-  if (typeof gapi === 'undefined' || typeof gapi.client === 'undefined') {
-    setTimeout(ensureGapiLoaded, 100); // Retry every 100ms until gapi is available
-  } else {
-    console.log('Google API (gapi) script loaded.');
+  // Load gapi client explicitly
+  gapi.load('client', () => {
+    console.log('gapi.client loaded.');
     gapiLoadedFlag = true;
     loadSheetsClient(); // Load Sheets API once gapi is ready
-  }
+  });
 }
 
 // Trigger authentication when the "Load Data" button is clicked
