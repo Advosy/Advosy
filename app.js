@@ -3,12 +3,13 @@ let accessToken = null;
 
 // Initialize Google Identity Services for OAuth
 function initOAuth() {
+  console.log('Initializing OAuth...');
+  
   if (typeof google === 'undefined' || typeof google.accounts === 'undefined') {
     console.error('Google Identity Services script not loaded yet.');
     return;
   }
 
-  console.log('Initializing OAuth...');
   tokenClient = google.accounts.oauth2.initTokenClient({
     client_id: '365324237288-6gc4iopjfudka628e8qv70muus8qp4mg.apps.googleusercontent.com', // Your Client ID
     scope: 'https://www.googleapis.com/auth/spreadsheets.readonly',
@@ -22,6 +23,12 @@ function initOAuth() {
       }
     }
   });
+}
+
+// GIS script loaded handler
+function gisLoaded() {
+  console.log('Google Identity Services script loaded.');
+  initOAuth(); // Initialize OAuth after GIS script is loaded
 }
 
 // Trigger authentication when the "Load Data" button is clicked
