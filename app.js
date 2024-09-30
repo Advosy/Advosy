@@ -1,21 +1,14 @@
 let tokenClient;
 let accessToken = null;
-let gisLoadedFlag = false;
-
-// This function is called when the GIS script has fully loaded
-function gisLoaded() {
-  console.log('Google Identity Services script loaded.');
-  gisLoadedFlag = true;
-  initOAuth();
-}
 
 // Initialize Google Identity Services for OAuth
 function initOAuth() {
-  if (!gisLoadedFlag) {
+  if (typeof google === 'undefined' || typeof google.accounts === 'undefined') {
     console.error('Google Identity Services script not loaded yet.');
     return;
   }
 
+  console.log('Initializing OAuth...');
   tokenClient = google.accounts.oauth2.initTokenClient({
     client_id: '365324237288-6gc4iopjfudka628e8qv70muus8qp4mg.apps.googleusercontent.com', // Your Client ID
     scope: 'https://www.googleapis.com/auth/spreadsheets.readonly',
@@ -33,7 +26,13 @@ function initOAuth() {
 
 // Trigger authentication when the "Load Data" button is clicked
 function authenticate() {
+  if (!tokenClient) {
+    console.error('tokenClient is not initialized yet.');
+    return;
+  }
+
   if (!accessToken) {
+    console.log('Requesting new access token...');
     tokenClient.requestAccessToken();
   } else {
     console.log('Already authenticated, access token exists.');
@@ -45,57 +44,47 @@ function authenticate() {
 function loadClient() {
   console.log('Attempting to load Google Sheets API...');
   
-  try {
-    gapi.client.setApiKey("AIzaSyAOnBct76Z-dCtn3GtQBvPIaSriGgA8ohw"); // Your API Key
-    gapi.client.load("https://sheets.googleapis.com/$discovery/rest?version=v4").then(() => {
-      console.log('Google Sheets API loaded successfully.');
-      fetchSheetData(); // Proceed to fetch the data
-    }, (err) => {
-      console.error('Error loading Google Sheets API:', err);
-      alert('Error loading Google Sheets API: ' + JSON.stringify(err));
-    });
-  } catch (error) {
-    console.error('Unexpected error when loading Google Sheets API:', error);
-    alert('Unexpected error: ' + error.message);
-  }
+  gapi.client.setApiKey("AIzaSyAOnBct76Z-dCtn3GtQBvPIaSriGgA8ohw"); // Your API Key
+  gapi.client.load("https://sheets.googleapis.com/$discovery/rest?version=v4").then(() => {
+    console.log('Google Sheets API loaded successfully.');
+    fetchSheetData(); // Proceed to fetch the data
+  }, (err) => {
+    console.error('Error loading Google Sheets API:', err);
+    alert('Error loading Google Sheets API: ' + JSON.stringify(err));
+  });
 }
 
 // Fetch data from Google Sheets
 function fetchSheetData() {
   console.log('Attempting to fetch data from Google Sheets...');
 
-  try {
-    gapi.client.sheets.spreadsheets.values.batchGet({
-      spreadsheetId: "1MQIuVmfrruCMyPk1Hc0iGGONHyahDOJ5p_Yd0FhCKQs", // Your Spreadsheet ID
-      ranges: [
-        "App!A1:G2",  // Monthly Roofing Data
-        "App!A4:I5",  // Monthly Solar Data
-        "App!A7:I7",  // Point Data
-        "App!A10:G11", // Yearly Roofing Data
-        "App!A13:I14", // Yearly Solar Data
-        "App!A16:B28", // Total Roofing Sales Per Month
-        "App!D16:E28"  // Total Solar Sales Per Month
-      ]
-    }).then((response) => {
-      console.log('Data successfully fetched from Google Sheets:', response);
+  gapi.client.sheets.spreadsheets.values.batchGet({
+    spreadsheetId: "1MQIuVmfrruCMyPk1Hc0iGGONHyahDOJ5p_Yd0FhCKQs", // Your Spreadsheet ID
+    ranges: [
+      "App!A1:G2",  // Monthly Roofing Data
+      "App!A4:I5",  // Monthly Solar Data
+      "App!A7:I7",  // Point Data
+      "App!A10:G11", // Yearly Roofing Data
+      "App!A13:I14", // Yearly Solar Data
+      "App!A16:B28", // Total Roofing Sales Per Month
+      "App!D16:E28"  // Total Solar Sales Per Month
+    ]
+  }).then((response) => {
+    console.log('Data successfully fetched from Google Sheets:', response);
 
-      const roofingData = response.result.valueRanges[0].values;
-      const solarData = response.result.valueRanges[1].values;
-      const pointData = response.result.valueRanges[2].values;
-      const yearlyRoofingData = response.result.valueRanges[3].values;
-      const yearlySolarData = response.result.valueRanges[4].values;
-      const totalRoofingSalesPerMonth = response.result.valueRanges[5].values;
-      const totalSolarSalesPerMonth = response.result.valueRanges[6].values;
+    const roofingData = response.result.valueRanges[0].values;
+    const solarData = response.result.valueRanges[1].values;
+    const pointData = response.result.valueRanges[2].values;
+    const yearlyRoofingData = response.result.valueRanges[3].values;
+    const yearlySolarData = response.result.valueRanges[4].values;
+    const totalRoofingSalesPerMonth = response.result.valueRanges[5].values;
+    const totalSolarSalesPerMonth = response.result.valueRanges[6].values;
 
-      displayData(roofingData, solarData, pointData, yearlyRoofingData, yearlySolarData, totalRoofingSalesPerMonth, totalSolarSalesPerMonth);
-    }, (err) => {
-      console.error('Error fetching data from Google Sheets:', err);
-      alert('Error fetching data from Google Sheets: ' + JSON.stringify(err));
-    });
-  } catch (error) {
-    console.error('Unexpected error when fetching data from Google Sheets:', error);
-    alert('Unexpected error: ' + error.message);
-  }
+    displayData(roofingData, solarData, pointData, yearlyRoofingData, yearlySolarData, totalRoofingSalesPerMonth, totalSolarSalesPerMonth);
+  }, (err) => {
+    console.error('Error fetching data from Google Sheets:', err);
+    alert('Error fetching data from Google Sheets: ' + JSON.stringify(err));
+  });
 }
 
 // Display data in tile format
