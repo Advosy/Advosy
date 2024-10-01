@@ -3,6 +3,12 @@ let accessToken = null;
 let gisLoadedFlag = false;
 let gapiLoadedFlag = false;
 
+// Handle gapi client load
+function handleClientLoad() {
+  console.log('gapi client loading...');
+  gapi.load('client', initializeGapiClient); // Load gapi client
+}
+
 // Initialize Google API client (gapi)
 function initializeGapiClient() {
   console.log('Initializing gapi client...');
